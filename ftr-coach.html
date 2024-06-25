@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FTR Coach Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border: 1px solid #007bff;
+    outline: none;
+}
+
+button {
+    width: 50%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.booking-summary {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.summary-details {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.summary-details div {
+    margin: 8px 0;
+    color: #333;
+}
+
+.summary-details .label {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.summary-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.summary-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.summary-content {
+    padding: 20px;
+}
+
+.summary-content .summary-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.summary-content .summary-detail:last-child {
+    margin-bottom: 0;
+}
+
+.summary-content .label {
+    color: #555;
+}
+
+.summary-content .value {
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FTR Coach Booking</h1>
+        <form id="booking-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" required>
+            
+            <label for="trainNumber">Train Number</label>
+            <input type="text" id="trainNumber" name="trainNumber" required>
+            
+            <label for="journeyDate">Journey Date</label>
+            <input type="date" id="journeyDate" name="journeyDate" required>
+            
+            <label for="coachType">Coach Type</label>
+            <select id="coachType" name="coachType" required>
+                <option value="AC First Class">AC First Class</option>
+                <option value="AC 2-Tier">AC 2-Tier</option>
+                <option value="AC 3-Tier">AC 3-Tier</option>
+                <option value="Sleeper Class">Sleeper Class</option>
+            </select>
+            
+            <button type="button" onclick="submitBooking()">Book Now</button>
+        </form>
+        
+        <div class="booking-summary" id="bookingSummary">
+            <!-- Booking summary will be displayed here -->
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        function submitBooking() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const trainNumber = document.getElementById('trainNumber').value.trim();
+    const journeyDate = document.getElementById('journeyDate').value.trim();
+    const coachType = document.getElementById('coachType').value.trim();
+
+    const bookingDetails = {
+        name: name,
+        email: email,
+        phone: phone,
+        trainNumber: trainNumber,
+        journeyDate: journeyDate,
+        coachType: coachType
+    };
+
+    displayBookingSummary(bookingDetails);
+}
+
+function displayBookingSummary(bookingDetails) {
+    const bookingSummaryDiv = document.getElementById('bookingSummary');
+    bookingSummaryDiv.innerHTML = '';
+
+    const summaryDetailsDiv = document.createElement('div');
+    summaryDetailsDiv.className = 'summary-details';
+
+    const summaryHeaderDiv = document.createElement('div');
+    summaryHeaderDiv.className = 'summary-header';
+    summaryHeaderDiv.innerHTML = `<h2>Booking Summary</h2>`;
+
+    const summaryContentDiv = document.createElement('div');
+    summaryContentDiv.className = 'summary-content';
+
+    const summaryContentHTML = `
+        <div class="summary-detail">
+            <div class="label">Name</div>
+            <div class="value">${bookingDetails.name}</div>
+        </div>
+        <div class="summary-detail">
+            <div class="label">Email</div>
+            <div class="value">${bookingDetails.email}</div>
+        </div>
+        <div class="summary-detail">
+            <div class="label">Phone</div>
+            <div class="value">${bookingDetails.phone}</div>
+        </div>
+        <div class="summary-detail">
+            <div class="label">Train Number</div>
+            <div class="value">${bookingDetails.trainNumber}</div>
+        </div>
+        <div class="summary-detail">
+            <div class="label">Journey Date</div>
+            <div class="value">${bookingDetails.journeyDate}</div>
+        </div>
+        <div class="summary-detail">
+            <div class="label">Coach Type</div>
+            <div class="value">${bookingDetails.coachType}</div>
+        </div>
+        <button type="button" onclick="redirectToThankYou()">Thank You</button>
+    `;
+
+    summaryContentDiv.innerHTML = summaryContentHTML;
+
+    summaryDetailsDiv.appendChild(summaryHeaderDiv);
+    summaryDetailsDiv.appendChild(summaryContentDiv);
+    bookingSummaryDiv.appendChild(summaryDetailsDiv);
+}
+
+function redirectToThankYou() {
+    window.location.href = 'ftr-coach.html';
+}
+
+    </script>
+</body>
+</html>

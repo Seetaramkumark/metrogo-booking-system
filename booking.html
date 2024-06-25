@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            margin-top: 70px; /* Adjusted for fixed navbar */
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-row div {
+            width: 48%;
+        }
+
+        input[type="text"], input[type="date"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .additional-options {
+            margin-bottom: 20px;
+        }
+
+        .additional-options label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: green;
+            color: white;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .buttons .search-button:hover {
+            background-color: darkgreen;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: #f0f0f0;
+            z-index: 1000;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #28a745;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-100%); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a.active {
+            background-color: #0056b3;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .arrow {
+            width: 0; 
+            height: 0; 
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid white;
+            margin-left: 10px;
+        }
+
+        .navbar a.active .arrow {
+            border-left-color: #0056b3;
+        }
+
+        .container {
+            margin-top: 60px; /* Adjust based on navbar height */
+        }
+
+        #thankYou {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #thankYou button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #thankYou button:hover {
+            background-color: #0056b3;
+        }
+
+        .stage {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .stage.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#" onclick="showStage('searchResults')" class="active">Search Trains <div class="arrow"></div></a>
+        <a href="#" onclick="showStage('trainDetails')">Train Details <div class="arrow"></div></a>
+        <a href="#" onclick="showStage('payment')">Make Payment <div class="arrow"></div></a>
+        <a href="#" onclick="showStage('confirmation')">Confirmation <div class="arrow"></div></a>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="container">
+        <!-- Search Results Form -->
+        <div id="searchResults" class="stage active">
+            <div class="form-container">
+                <h2>BOOK TICKET</h2>
+                <form id="searchForm" onsubmit="searchTrains(event)">
+                    <div class="form-row">
+                        <div>
+                            <label for="from">From:</label>
+                            <input type="text" id="from" required>
+                        </div>
+                        <div>
+                            <label for="to">To:</label>
+                            <input type="text" id="to" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div>
+                            <label for="date">Travel Date:</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div>
+                            <label for="class">Class:</label>
+                            <select id="class" required>
+                                <option value="all">All Classes</option>
+                                <option value="ea">Anubhuti Class (EA)</option>
+                                <option value="1a">AC First Class (1A)</option>
+                                <option value="ev">Vistadome AC (EV)</option>
+                                <option value="ec">Exec. Chair Car (EC)</option>
+                                <option value="2a">AC 2 Tier (2A)</option>
+                                <option value="fc">First Class (FC)</option>
+                                <option value="3a">AC 3 Tier (3A)</option>
+                                <option value="3e">AC 3 Economy (3E)</option>
+                                <option value="vc">Vistadome Chair Car (VC)</option>
+                                <option value="cc">AC Chair car (CC)</option>
+                                <option value="sl">Sleeper (SL)</option>
+                                <option value="vs">Vistadome Non AC (VS)</option>
+                                <option value="2s">Second Sitting (2S)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="additional-options">
+                        <label>
+                            <input type="checkbox" id="disability" name="options" value="disability">
+                            Person With Disability Concession
+                        </label>
+                        <label>
+                            <input type="checkbox" id="flexible" name="options" value="flexible">
+                            Flexible With Date
+                        </label>
+                        <label>
+                            <input type="checkbox" id="berth" name="options" value="berth">
+                            Train with Available Berth
+                        </label>
+                        <label>
+                            <input type="checkbox" id="pass" name="options" value="pass">
+                            Railway Pass Concession
+                        </label>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="submit" class="search-button">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Train Details Form -->
+        <div id="trainDetails" class="stage">
+            <div class="form-container">
+                <h2>Train Details</h2>
+                <form id="trainDetailsForm" onsubmit="showStage('payment'); event.preventDefault();">
+                    <div class="form-row">
+                        <div>
+                            <label for="trainNumber">Train Number:</label>
+                            <input type="text" id="trainNumber" required>
+                        </div>
+                        <div>
+                            <label for="trainName">Train Name:</label>
+                            <input type="text" id="trainName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="departureTime">Departure Time:</label>
+                            <input type="text" id="departureTime" required>
+                        </div>
+                        <div>
+                            <label for="arrivalTime">Arrival Time:</label>
+                            <input type="text" id="arrivalTime" required>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" class="next-button">Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div id="payment" class="stage">
+            <div class="form-container">
+                <h2>Make Payment</h2>
+                <form id="paymentForm" onsubmit="showStage('confirmation'); event.preventDefault();">
+                    <div class="form-row">
+                        <div>
+                            <label for="cardNumber">Card Number:</label>
+                            <input type="text" id="cardNumber" required>
+                        </div>
+                        <div>
+                            <label for="expiryDate">Expiry Date:</label>
+                            <input type="date" id="expiryDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="cvv">CVV:</label>
+                            <input type="text" id="cvv" required>
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" class="pay-button">Pay</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div id="confirmation" class="stage">
+            <div class="form-container">
+                <h2>Confirmation</h2>
+                <p>Your booking is confirmed. Your ticket details have been sent to your email.</p>
+                <div id="thankYou">
+                    <h2>Thank you for booking!</h2>
+                    <button onclick="redirectToIndex()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showStage(stageId) {
+            document.querySelectorAll('.stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+
+            document.getElementById(stageId).classList.add('active');
+
+            document.querySelectorAll('.navbar a').forEach(nav => {
+                nav.classList.remove('active');
+            });
+
+            document.querySelector(`.navbar a[onclick="showStage('${stageId}')"]`).classList.add('active');
+
+            const stages = ['searchResults', 'trainDetails', 'payment', 'confirmation'];
+            const index = stages.indexOf(stageId);
+            const progressWidth = (index + 1) * 25; // 25% per stage
+            document.getElementById('progress').style.width = `${progressWidth}%`;
+
+            if (stageId === 'confirmation') {
+                document.getElementById('thankYou').style.display = 'block';
+            } else {
+                document.getElementById('thankYou').style.display = 'none';
+            }
+        }
+        
+
+        function searchTrains(event) {
+            event.preventDefault();
+            showStage('trainDetails');
+        }
+
+        function redirectToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showStage('searchResults');
+        });
+        
+    </script>
+</body>
+</html>

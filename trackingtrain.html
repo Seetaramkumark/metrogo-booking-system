@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Train</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+    border: 1px solid #007bff;
+    outline: none;
+}
+
+button {
+    width: 50%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.train-result {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.train-details {
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.train-details div {
+    margin: 8px 0;
+    color: #333;
+}
+
+.train-details .label {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.train-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.train-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.train-content {
+    padding: 20px;
+}
+
+.train-content .train-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.train-content .train-detail:last-child {
+    margin-bottom: 0;
+}
+
+.train-content .label {
+    color: #555;
+}
+
+.train-content .value {
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Track Your Train</h1>
+        <form id="train-form">
+            <label for="trainNumber">Enter Train Number</label>
+            <input type="text" id="trainNumber" name="trainNumber" required>
+            
+            <label for="journeyDate">Enter Journey Date</label>
+            <input type="date" id="journeyDate" name="journeyDate" required>
+            
+            <button type="button" onclick="trackTrain()">Track Train</button>
+        </form>
+        
+        <div class="train-result" id="trainResult">
+            <!-- Train location details will be displayed here -->
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        function trackTrain() {
+    const trainNumber = document.getElementById('trainNumber').value.trim();
+    const journeyDate = document.getElementById('journeyDate').value.trim();
+
+    // Simulating API call to fetch train location details (replace with actual API call)
+    // Example data structure
+    const trainDetails = {
+        trainNumber: trainNumber,
+        trainName: 'A P EXPRESS',
+        currentStation: 'Agra Cantt [AGC]',
+        nextStation: 'Gwalior [GWL]',
+        arrivalTime: '11:50',
+        departureTime: '12:10',
+        delay: '10 mins'
+    };
+
+    displayTrainDetails(trainDetails);
+}
+
+function displayTrainDetails(trainDetails) {
+    const trainResultDiv = document.getElementById('trainResult');
+    trainResultDiv.innerHTML = '';
+
+    const trainDetailsDiv = document.createElement('div');
+    trainDetailsDiv.className = 'train-details';
+
+    const trainHeaderDiv = document.createElement('div');
+    trainHeaderDiv.className = 'train-header';
+    trainHeaderDiv.innerHTML = `<h2>${trainDetails.trainName}</h2>`;
+
+    const trainContentDiv = document.createElement('div');
+    trainContentDiv.className = 'train-content';
+
+    const trainContentHTML = `
+        <div class="train-detail">
+            <div class="label">Train No.</div>
+            <div class="value">${trainDetails.trainNumber}</div>
+        </div>
+        <div class="train-detail">
+            <div class="label">Current Station</div>
+            <div class="value">${trainDetails.currentStation}</div>
+        </div>
+        <div class="train-detail">
+            <div class="label">Next Station</div>
+            <div class="value">${trainDetails.nextStation}</div>
+        </div>
+        <div class="train-detail">
+            <div class="label">Arrival Time</div>
+            <div class="value">${trainDetails.arrivalTime}</div>
+        </div>
+        <div class="train-detail">
+            <div class="label">Departure Time</div>
+            <div class="value">${trainDetails.departureTime}</div>
+        </div>
+        <div class="train-detail">
+            <div class="label">Delay</div>
+            <div class="value">${trainDetails.delay}</div>
+        </div>
+    `;
+
+    trainContentDiv.innerHTML = trainContentHTML;
+
+    trainDetailsDiv.appendChild(trainHeaderDiv);
+    trainDetailsDiv.appendChild(trainContentDiv);
+    trainResultDiv.appendChild(trainDetailsDiv);
+}
+
+    </script>
+</body>
+</html>

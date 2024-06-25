@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Ticket</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #f5f7fa);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        form label {
+            margin-top: 10px;
+            display: block;
+            color: #555;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        form label:hover {
+            transform: translateY(-3px);
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: border 0.3s ease;
+        }
+
+        form input:focus {
+            border: 1px solid #007bff;
+            outline: none;
+        }
+
+        form button {
+            width: 32%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            background: #007bff;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        form button:hover {
+            background: #0056b3;
+        }
+
+        form button:active {
+            transform: scale(0.95);
+        }
+
+        #tickets-list {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .ticket {
+            padding: 15px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 300px;
+            text-align: left;
+        }
+
+        .ticket:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .ticket div {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .ticket .ticket-number {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cancel Your Ticket</h1>
+        <form id="cancel-form">
+            <label for="ticketNumber">Ticket Number</label>
+            <input type="text" id="ticketNumber" name="ticketNumber" required>
+            
+            <label for="trainNumber">Train Number</label>
+            <input type="text" id="trainNumber" name="trainNumber" required>
+            
+            <label for="trainName">Train Name</label>
+            <input type="text" id="trainName" name="trainName" required>
+            
+            <label for="departure">Departure</label>
+            <input type="text" id="departure" name="departure" required>
+            
+            <label for="arrival">Arrival</label>
+            <input type="text" id="arrival" name="arrival" required>
+            
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status" required>
+            
+            <button type="button" onclick="addTicket()">Add Ticket</button>
+            <button type="button" onclick="updateTicket()">Update Ticket</button>
+            <button type="button" onclick="deleteTicket()">Delete Ticket</button>
+        </form>
+        
+        <div id="tickets-list"></div>
+    </div>
+
+    <script>
+        // JavaScript for ticket management
+        let tickets = [];
+
+        function addTicket() {
+            const ticket = getTicketFromForm();
+            tickets.push(ticket);
+            clearForm();
+            displayTickets();
+        }
+
+        function updateTicket() {
+            const ticketNumber = document.getElementById('ticketNumber').value;
+            const ticketIndex = tickets.findIndex(ticket => ticket.ticketNumber === ticketNumber);
+
+            if (ticketIndex !== -1) {
+                tickets[ticketIndex] = getTicketFromForm();
+                clearForm();
+                displayTickets();
+            } else {
+                alert("Ticket not found!");
+            }
+        }
+
+        function deleteTicket() {
+            const ticketNumber = document.getElementById('ticketNumber').value;
+            tickets = tickets.filter(ticket => ticket.ticketNumber !== ticketNumber);
+            clearForm();
+            displayTickets();
+        }
+
+        function getTicketFromForm() {
+            return {
+                ticketNumber: document.getElementById('ticketNumber').value,
+                trainNumber: document.getElementById('trainNumber').value,
+                trainName: document.getElementById('trainName').value,
+                departure: document.getElementById('departure').value,
+                arrival: document.getElementById('arrival').value,
+                status: document.getElementById('status').value
+            };
+        }
+
+        function clearForm() {
+            document.getElementById('cancel-form').reset();
+        }
+
+        function displayTickets() {
+            const ticketsList = document.getElementById('tickets-list');
+            ticketsList.innerHTML = '';
+
+            tickets.forEach(ticket => {
+                const ticketDiv = document.createElement('div');
+                ticketDiv.className = 'ticket';
+                ticketDiv.innerHTML = `
+                    <div class="ticket-number">Ticket Number: ${ticket.ticketNumber}</div>
+                    <div>Train Number: ${ticket.trainNumber}</div>
+                    <div>Train Name: ${ticket.trainName}</div>
+                    <div>Departure: ${ticket.departure}</div>
+                    <div>Arrival: ${ticket.arrival}</div>
+                    <div>Status: ${ticket.status}</div>
+                `;
+                ticketsList.appendChild(ticketDiv);
+            });
+        }
+    </script>
+</body>
+</html>

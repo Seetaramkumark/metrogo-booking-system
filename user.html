@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Panel - MetroGo</title>
+    <link rel="stylesheet" href="css/user.css">
+    <style>
+        /* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.user-panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px;
+    display: flex;
+}
+
+.profile {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.booking-history {
+    flex: 1;
+}
+
+.user-panel h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>User Panel</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="booking.html">Book Tickets</a></li>
+                <li><a href="schedules.html">Train Schedules</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="user-panel">
+            <div class="profile">
+                <h2>Profile</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+            <div class="booking-history">
+                <h2>Booking History</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Train</th>
+                            <th>Date</th>
+                            <th>Class</th>
+                            <th>Seats</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Booking history data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 MetroGo. All rights reserved.</p>
+    </footer>
+    <script src="js/user.js"></script>
+    <script>
+        // Sample JavaScript to fetch user data and booking history (assuming data is available)
+document.addEventListener('DOMContentLoaded', function() {
+    // Replace these with actual data fetching mechanisms
+    const userData = {
+        username: 'JohnDoe',
+        email: 'johndoe@example.com'
+    };
+
+    const bookingHistory = [
+        { bookingId: 1, train: 'Express 101', date: '2024-07-01', class: 'First', seats: 2 },
+        { bookingId: 2, train: 'Local 202', date: '2024-07-05', class: 'Economy', seats: 1 }
+    ];
+
+    // Update profile form with user data
+    document.getElementById('username').value = userData.username;
+    document.getElementById('email').value = userData.email;
+
+    // Populate booking history table
+    const bookingTableBody = document.querySelector('.booking-history table tbody');
+    bookingHistory.forEach(booking => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${booking.bookingId}</td>
+            <td>${booking.train}</td>
+            <td>${booking.date}</td>
+            <td>${booking.class}</td>
+            <td>${booking.seats}</td>
+            <td><button class="view-details">View Details</button></td>
+        `;
+        bookingTableBody.appendChild(row);
+    });
+
+    // Optional: Add event listeners or additional functionality as needed
+});
+
+    </script>
+</body>
+</html>

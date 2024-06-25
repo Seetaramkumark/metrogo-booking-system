@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNR Enquiry</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: border 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border: 1px solid #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 50%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            background-color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .pnr-result {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .pnr-details {
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pnr-details div {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .pnr-details .label {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .pnr-header {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .pnr-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .pnr-content {
+            padding: 20px;
+        }
+
+        .pnr-content .pnr-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .pnr-content .pnr-detail:last-child {
+            margin-bottom: 0;
+        }
+
+        .pnr-content .label {
+            color: #555;
+        }
+
+        .pnr-content .value {
+            font-weight: bold;
+        }
+
+        .thankyou-button {
+            width: 50%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            background-color: #28a745;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            justify-content: center;
+        }
+
+        .thankyou-button:hover {
+            background-color: #218838;
+        }
+
+        .thankyou-button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PNR Enquiry</h1>
+        <form id="pnr-form">
+            <label for="pnrNumber">Enter PNR Number</label>
+            <input type="text" id="pnrNumber" name="pnrNumber" required>
+            <button type="button" onclick="checkPNR()">Check PNR</button>
+        </form>
+        
+        <div class="pnr-result" id="pnrResult">
+            <!-- PNR details will be displayed here -->
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script>
+        function checkPNR() {
+            const pnrNumber = document.getElementById('pnrNumber').value.trim();
+
+            // Simulating API call to fetch PNR details (replace with actual API call)
+            // Example data structure
+            const pnrDetails = {
+                pnrNumber: pnrNumber,
+                trainNumber: '12724',
+                trainName: 'A P EXPRESS',
+                fromStation: 'New Delhi [NDLS]',
+                toStation: 'Hyderabad Deccan',
+                journeyDate: '03-Oct-2015',
+                arrivalTime: '19:50',
+                departureTime: '17:25',
+                travelTime: '26:25 Hrs',
+                ticketClass: 'SL',
+                chartStatus: 'CHART NOT PREPARED'
+            };
+
+            displayPNRDetails(pnrDetails);
+        }
+
+        function displayPNRDetails(pnrDetails) {
+            const pnrResultDiv = document.getElementById('pnrResult');
+            pnrResultDiv.innerHTML = '';
+
+            const pnrDetailsDiv = document.createElement('div');
+            pnrDetailsDiv.className = 'pnr-details';
+
+            const pnrHeaderDiv = document.createElement('div');
+            pnrHeaderDiv.className = 'pnr-header';
+            pnrHeaderDiv.innerHTML = `<h2>${pnrDetails.trainName}</h2>`;
+
+            const pnrContentDiv = document.createElement('div');
+            pnrContentDiv.className = 'pnr-content';
+
+            const pnrContentHTML = `
+                <div class="pnr-detail">
+                    <div class="label">PNR No.</div>
+                    <div class="value">${pnrDetails.pnrNumber}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Train No.</div>
+                    <div class="value">${pnrDetails.trainNumber}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Date/Time</div>
+                    <div class="value">${pnrDetails.journeyDate}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Station From</div>
+                    <div class="value">${pnrDetails.fromStation}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Station To</div>
+                    <div class="value">${pnrDetails.toStation}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Arrival Time</div>
+                    <div class="value">${pnrDetails.arrivalTime}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Departure Time</div>
+                    <div class="value">${pnrDetails.departureTime}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Travel Time</div>
+                    <div class="value">${pnrDetails.travelTime}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Class</div>
+                    <div class="value">${pnrDetails.ticketClass}</div>
+                </div>
+                <div class="pnr-detail">
+                    <div class="label">Chart Status</div>
+                    <div class="value">${pnrDetails.chartStatus}</div>
+                </div>
+            `;
+
+            pnrContentDiv.innerHTML = pnrContentHTML;
+
+            pnrDetailsDiv.appendChild(pnrHeaderDiv);
+            pnrDetailsDiv.appendChild(pnrContentDiv);
+
+            const thankYouButton = document.createElement('button');
+            thankYouButton.className = 'thankyou-button';
+            thankYouButton.innerText = 'Thank You';
+            thankYouButton.onclick = function() {
+                window.location.href = 'pnrenquiry.html';
+            };
+
+            pnrResultDiv.appendChild(pnrDetailsDiv);
+            pnrResultDiv.appendChild(thankYouButton);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* Styles for the user panel page */
+.user-panel {
+    width: 80%;
+    margin: auto;
+}
+
+.profile,
+.booking-history,
+.wallet {
+    margin-bottom: 30px;
+}
+
+.profile h2,
+.booking-history h2,
+.wallet h2 {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.booking-history table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.booking-history th,
+.booking-history td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.booking-history th {
+    background-color: #f4f4f4;
+}
+
+.booking-history tbody tr:hover {
+    background-color: #f1f1f1;
+}

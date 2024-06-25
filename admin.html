@@ -1,0 +1,410 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .navbar {
+            background-color: #333;
+            width: 250px;
+            padding-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: width 0.3s ease;
+        }
+        .navbar.collapsed {
+            width: 80px;
+        }
+        .navbar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .menu-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .menu-item:hover {
+            background-color: #555;
+        }
+        .content {
+            flex-grow: 1;
+            padding-left: 20px;
+            width: 100%;
+            max-width: calc(100% - 250px); /* Adjust for navbar width */
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333333;
+        }
+        .card p {
+            margin-bottom: 5px;
+            color: #666666;
+        }
+        .notification {
+            background-color: #3e2093;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            display: none;
+        }
+        .notification.show {
+            display: block;
+            animation: slideIn 0.5s forwards;
+        }
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar" id="navbar">
+            <h2>Admin Dashboard</h2>
+            <div class="menu-item">
+                <a href="#" id="viewBookings">View Bookings</a>
+            </div>
+            <div class="menu-item">
+                <a href="manage-train-schedules.html">Manage Train Schedules</a>
+            </div>
+            <div class="menu-item">
+                <a href="manage-ticket-prices.html">Manage Ticket Prices</a>
+            </div>
+            <div class="menu-item">
+                <a href="user-management.html">User Management</a>
+            </div>
+            <div class="menu-item">
+                <a href="reports-and-analytics.html">Reports and Analytics</a>
+            </div>
+            <div class="menu-item">
+                <a href="system-settings.html">System Settings</a>
+            </div>
+            <div class="menu-item">
+                <a href="feedback-and-support.html">Feedback and Support</a>
+            </div>
+            <div class="menu-item">
+                <a href="security-and-access-control.html">Security and Access Control</a>
+            </div>
+            <div class="menu-item">
+                <a href="#" id="notifications">Notifications</a>
+            </div>
+            
+        </div>
+        <div class="content">
+            <h1>Admin Panel - All Form Submissions</h1>
+            <div id="formDataDisplay"></div>
+        </div>
+        <div class="notification" id="notification"></div>
+    </div>
+    
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+    const allFormData = JSON.parse(localStorage.getItem('formData')) || [];
+    const formDataDisplay = document.getElementById('formDataDisplay');
+    const notification = document.getElementById('notification');
+    const navbar = document.getElementById('navbar');
+
+    // Function to display form submissions
+    function displayFormSubmissions() {
+        if (allFormData.length > 0) {
+            formDataDisplay.innerHTML = ''; // Clear previous content
+            allFormData.forEach((formData, index) => {
+                const html = `
+                    <div class="card">
+                        <h3>Form Submission - ${formData.datetime}</h3>
+                        <p><strong>Name:</strong> ${formData.name}</p>
+                        <p><strong>Email:</strong> ${formData.email}</p>
+                        <p><strong>Message:</strong></p>
+                        <p>${formData.message}</p>
+                    </div>
+                `;
+                formDataDisplay.innerHTML += html;
+            });
+
+            // Show notification for new submissions
+            notification.textContent = `${allFormData.length} new form submission(s)`;
+            notification.classList.add('show');
+        } else {
+            formDataDisplay.innerHTML = '<p>No form data submitted yet.</p>';
+        }
+    }
+
+    // Initial display of form submissions
+    displayFormSubmissions();
+
+    // Simulate collapsing navbar on small screens
+    window.addEventListener('resize', function() {
+        if (window.innerWidth < 768) {
+            navbar.classList.add('collapsed');
+        } else {
+            navbar.classList.remove('collapsed');
+        }
+    });
+
+    // Handle click on "Notifications" menu item
+    const notificationsMenuItem = document.querySelector('.menu-item:nth-last-child(1)');
+    notificationsMenuItem.addEventListener('click', function() {
+        displayFormSubmissions(); // Update submissions if there are new ones
+        notification.classList.remove('show'); // Hide notification after clicking
+    });
+
+    // Initial check on page load for collapsed navbar
+    if (window.innerWidth < 768) {
+        navbar.classList.add('collapsed');
+    }
+});
+
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: stretch;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .navbar {
+            background-color: #333;
+            width: 250px;
+            padding-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Ensures smooth animation */
+        }
+        .navbar.collapsed {
+            width: 80px;
+        }
+        .navbar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease-out;
+            width: 100%;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .menu-item:hover {
+            background-color: #555;
+            transform: scale(1.05); /* Scale up on hover */
+        }
+        .menu-item a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .menu-item a:hover {
+            color: #f0f0f0; /* Lighten text color on hover */
+        }
+        .content {
+            flex-grow: 1;
+            padding-left: 20px;
+            width: 100%;
+            max-width: calc(100% - 250px); /* Adjust for navbar width */
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333333;
+        }
+        .card p {
+            margin-bottom: 5px;
+            color: #666666;
+        }
+        .notification {
+            background-color: #3e2093;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            display: none;
+        }
+        .notification.show {
+            display: block;
+            animation: slideIn 0.5s forwards;
+        }
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar" id="navbar">
+            <h2>Admin Dashboard</h2>
+            <div class="menu-item">
+                <a href="manage-train-schedules.html">Manage Train Schedules</a>
+            </div>
+            <div class="menu-item">
+                <a href="manage-ticket-prices.html">Manage Ticket Prices</a>
+            </div>
+            <div class="menu-item">
+                <a href="user-management.html">User Management</a>
+            </div>
+            <div class="menu-item">
+                <a href="reports-and-analytics.html">Reports and Analytics</a>
+            </div>
+            <div class="menu-item">
+                <a href="system-settings.html">System Settings</a>
+            </div>
+            <div class="menu-item">
+                <a href="feedback-and-support.html">Feedback and Support</a>
+            </div>
+            <div class="menu-item">
+                <a href="security-and-access-control.html">Security and Access Control</a>
+            </div>
+            <div class="menu-item">
+                <a href="notifications.html">Notifications</a>
+            </div>
+        </div>
+        <div class="content">
+            <h1>Admin Panel - Customer Reports</h1>
+            <div id="formDataDisplay"></div>
+        </div>
+        <div class="notification" id="notification"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allFormData = JSON.parse(localStorage.getItem('formData')) || [];
+            const formDataDisplay = document.getElementById('formDataDisplay');
+            const notification = document.getElementById('notification');
+            const navbar = document.getElementById('navbar');
+
+            function displayFormSubmissions() {
+                if (allFormData.length > 0) {
+                    formDataDisplay.innerHTML = '';
+                    allFormData.forEach((formData, index) => {
+                        const html = `
+                            <div class="card">
+                                <h3>Form Submission - ${formData.datetime}</h3>
+                                <p><strong>Name:</strong> ${formData.name}</p>
+                                <p><strong>Email:</strong> ${formData.email}</p>
+                                <p><strong>Message:</strong></p>
+                                <p>${formData.message}</p>
+                            </div>
+                        `;
+                        formDataDisplay.innerHTML += html;
+                    });
+
+                    notification.textContent = `${allFormData.length} new form submission(s)`;
+                    notification.classList.add('show');
+                } else {
+                    formDataDisplay.innerHTML = '<p>No form data submitted yet.</p>';
+                }
+            }
+
+            displayFormSubmissions();
+
+            window.addEventListener('resize', function() {
+                if (window.innerWidth < 768) {
+                    navbar.classList.add('collapsed');
+                } else {
+                    navbar.classList.remove('collapsed');
+                }
+            });
+
+            const notificationsMenuItem = document.getElementById('notifications');
+            notificationsMenuItem.addEventListener('click', function(event) {
+                event.preventDefault();
+                window.location.href = 'notifications.html';
+                notification.classList.remove('show');
+            });
+
+            if (window.innerWidth < 768) {
+                navbar.classList.add('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>

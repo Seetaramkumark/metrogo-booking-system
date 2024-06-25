@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Go Schedules</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding-left: 20px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .navbar ul li {
+            margin-right: 20px;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .content {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .vertical-navbar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            max-height: calc(100vh - 50px); /* Adjust according to your navbar height */
+        }
+
+        .main-container {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-left: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #e9e9e9;
+            cursor: pointer;
+        }
+
+        .filter-section, .filter-category {
+            margin-bottom: 20px;
+        }
+
+        .filter-section h2, .filter-category h3 {
+            margin: 0 0 10px;
+            color: #007bff;
+        }
+
+        .reset-filters, .select-all, .time-group button {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+        }
+
+        .reset-filters:hover, .select-all:hover, .time-group button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .checkbox-group, .time-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .checkbox-group label, .time-group button {
+            margin-bottom: 5px;
+        }
+
+        .input-search {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .input-search:focus {
+            border-color: #aaa;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>MetroGo</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="booking.html">Book Tickets</a></li>
+            <li><a href="user.html">User Panel</a></li>
+            
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div class="vertical-navbar">
+            <div class="filter-section">
+                <h2>Refine Results</h2>
+                <button class="reset-filters">Reset Filters</button>
+            </div>
+            <div class="filter-category">
+                <h3>Journey Class</h3>
+                <button class="select-all">Select All</button>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> AC First Class (1A)</label>
+                    <label><input type="checkbox" checked> AC 2 Tier (2A)</label>
+                    <label><input type="checkbox" checked> Second Sitting (2S)</label>
+                    <label><input type="checkbox" checked> AC 3 Tier (3A)</label>
+                    <label><input type="checkbox" checked> AC 3 Economy (3E)</label>
+                    <label><input type="checkbox" checked> AC Chair car (CC)</label>
+                    <label><input type="checkbox" checked> Exec. Chair Car (EC)</label>
+                    <label><input type="checkbox" checked> Sleeper (SL)</label>
+                </div>
+            </div>
+            <div class="filter-category">
+                <h3>Train Type</h3>
+                <button class="select-all">Select All</button>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" checked> OTHER</label>
+                    <label><input type="checkbox" checked> SHATABDI</label>
+                    <label><input type="checkbox" checked> SPECIAL</label>
+                    <label><input type="checkbox" checked> SPECIAL TATKAL</label>
+                </div>
+            </div>
+            <div class="filter-category">
+                <h3>Departure Time</h3>
+                <button class="select-all">Select All</button>
+                <div class="time-group">
+                    <button>00:00 - 06:00 Early Morning</button>
+                    <button>06:00 - 12:00 Morning</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <h1>Metro Go Train Schedules</h1>
+            <input type="text" id="search-train" class="input-search" placeholder="Search train...">
+            <table class="table" id="train-schedules">
+                <thead>
+                    <tr>
+                        <th>Train Number</th>
+                        <th>Train Name</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-body">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trainSchedules = [
+                { trainNumber: '12345', trainName: 'Express Metro', departure: '08:00 AM', arrival: '09:30 AM', status: 'On Time' },
+                { trainNumber: '67890', trainName: 'Rapid Transit', departure: '10:30 AM', arrival: '12:00 PM', status: 'Delayed' },
+                { trainNumber: '12345', trainName: 'Express Metro', departure: '08:00 AM', arrival: '09:30 AM', status: 'On Time' },
+    { trainNumber: '67890', trainName: 'Rapid Transit', departure: '10:30 AM', arrival: '12:00 PM', status: 'Delayed' },
+    { trainNumber: '11223', trainName: 'City Link', departure: '11:00 AM', arrival: '12:30 PM', status: 'On Time' },
+    { trainNumber: '44556', trainName: 'Mountain Express', departure: '01:00 PM', arrival: '02:30 PM', status: 'On Time' },
+    { trainNumber: '77889', trainName: 'River Line', departure: '02:00 PM', arrival: '03:30 PM', status: 'Delayed' },
+    { trainNumber: '22334', trainName: 'Valley Express', departure: '03:00 PM', arrival: '04:30 PM', status: 'On Time' },
+    { trainNumber: '55667', trainName: 'Forest Train', departure: '04:00 PM', arrival: '05:30 PM', status: 'Cancelled' },
+    { trainNumber: '88990', trainName: 'Seaside Express', departure: '05:00 PM', arrival: '06:30 PM', status: 'On Time' },
+    { trainNumber: '33445', trainName: 'Lakeside Metro', departure: '06:00 PM', arrival: '07:30 PM', status: 'On Time' },
+    { trainNumber: '66778', trainName: 'Night Line', departure: '07:00 PM', arrival: '08:30 PM', status: 'Delayed' },
+    { trainNumber: '99001', trainName: 'Early Bird', departure: '05:30 AM', arrival: '06:45 AM', status: 'On Time' },
+    { trainNumber: '99002', trainName: 'Morning Star', departure: '06:00 AM', arrival: '07:15 AM', status: 'On Time' },
+    { trainNumber: '99003', trainName: 'Sunrise Special', departure: '06:30 AM', arrival: '07:45 AM', status: 'On Time' },
+    { trainNumber: '99004', trainName: 'Daybreak Express', departure: '07:00 AM', arrival: '08:15 AM', status: 'On Time' },
+    { trainNumber: '99005', trainName: 'Morning Glory', departure: '07:30 AM', arrival: '08:45 AM', status: 'On Time' },
+    { trainNumber: '99006', trainName: 'Dawn Patrol', departure: '08:00 AM', arrival: '09:15 AM', status: 'Delayed' },
+    { trainNumber: '99007', trainName: 'Morning Breeze', departure: '08:30 AM', arrival: '09:45 AM', status: 'On Time' },
+    { trainNumber: '99008', trainName: 'Morning Dew', departure: '09:00 AM', arrival: '10:15 AM', status: 'On Time' },
+    { trainNumber: '99009', trainName: 'Morning Mist', departure: '09:30 AM', arrival: '10:45 AM', status: 'On Time' },
+    { trainNumber: '99010', trainName: 'Brunch Express', departure: '10:00 AM', arrival: '11:15 AM', status: 'Delayed' },
+    { trainNumber: '99011', trainName: 'Midmorning Express', departure: '10:30 AM', arrival: '11:45 AM', status: 'On Time' },
+    { trainNumber: '99012', trainName: 'Noon Flyer', departure: '11:00 AM', arrival: '12:15 PM', status: 'On Time' },
+    { trainNumber: '99013', trainName: 'Lunchtime Express', departure: '11:30 AM', arrival: '12:45 PM', status: 'On Time' },
+    { trainNumber: '99014', trainName: 'Afternoon Delight', departure: '12:00 PM', arrival: '01:15 PM', status: 'Delayed' },
+    { trainNumber: '99015', trainName: 'Post Lunch Special', departure: '12:30 PM', arrival: '01:45 PM', status: 'On Time' },
+    { trainNumber: '99016', trainName: 'Siesta Express', departure: '01:00 PM', arrival: '02:15 PM', status: 'On Time' },
+    { trainNumber: '99017', trainName: 'Midafternoon Express', departure: '01:30 PM', arrival: '02:45 PM', status: 'On Time' },
+    { trainNumber: '99018', trainName: 'Tea Time Special', departure: '02:00 PM', arrival: '03:15 PM', status: 'Delayed' },
+    { trainNumber: '99019', trainName: 'Evening Breeze', departure: '02:30 PM', arrival: '03:45 PM', status: 'On Time' },
+    { trainNumber: '99020', trainName: 'Dusk Express', departure: '03:00 PM', arrival: '04:15 PM', status: 'On Time' },
+    { trainNumber: '99021', trainName: 'Twilight Special', departure: '03:30 PM', arrival: '04:45 PM', status: 'On Time' },
+    { trainNumber: '99022', trainName: 'Sunset Express', departure: '04:00 PM', arrival: '05:15 PM', status: 'Delayed' },
+    { trainNumber: '99023', trainName: 'Dinner Special', departure: '04:30 PM', arrival: '05:45 PM', status: 'On Time' },
+    { trainNumber: '99024', trainName: 'Evening Star', departure: '05:00 PM', arrival: '06:15 PM', status: 'On Time' },
+    { trainNumber: '99025', trainName: 'Moonlight Express', departure: '05:30 PM', arrival: '06:45 PM', status: 'On Time' },
+    { trainNumber: '99026', trainName: 'Night Owl', departure: '06:00 PM', arrival: '07:15 PM', status: 'Delayed' },
+    { trainNumber: '99027', trainName: 'Late Night Express', departure: '06:30 PM', arrival: '07:45 PM', status: 'On Time' },
+    { trainNumber: '99028', trainName: 'Midnight Special', departure: '07:00 PM', arrival: '08:15 PM', status: 'On Time' },
+    { trainNumber: '99029', trainName: 'After Hours Express', departure: '07:30 PM', arrival: '08:45 PM', status: 'On Time' },
+    { trainNumber: '99030', trainName: 'Nightcap Express', departure: '08:00 PM', arrival: '09:15 PM', status: 'Delayed' },
+    { trainNumber: '99031', trainName: 'Nightfall Express', departure: '08:30 PM', arrival: '09:45 PM', status: 'On Time' },
+    { trainNumber: '99032', trainName: 'Late Night Flyer', departure: '09:00 PM', arrival: '10:15 PM', status: 'On Time' },
+    { trainNumber: '99033', trainName: 'Midnight Flyer', departure: '09:30 PM', arrival: '10:45 PM', status: 'On Time' },
+    { trainNumber: '99034', trainName: 'Early Dawn', departure: '10:00 PM', arrival: '11:15 PM', status: 'Delayed' },
+    { trainNumber: '99035', trainName: 'Nighttime Express', departure: '10:30 PM', arrival: '11:45 PM', status: 'On Time' },
+    { trainNumber: '99036', trainName: 'Pre-Dawn Express', departure: '11:00 PM', arrival: '12:15 AM', status: 'On Time' },
+    { trainNumber: '99037', trainName: 'Dream Express', departure: '11:30 PM', arrival: '12:45 AM', status: 'On Time' },
+    { trainNumber: '99038', trainName: 'Starlight Express', departure: '12:00 AM', arrival: '01:15 AM', status: 'Delayed' },
+    { trainNumber: '99039', trainName: 'Night Watch', departure: '12:30 AM', arrival: '01:45 AM', status: 'On Time' },
+    { trainNumber: '99040', trainName: 'Moonbeam Express', departure: '01:00 AM', arrival: '02:15 AM', status: 'On Time' },
+    { trainNumber: '99041', trainName: 'Lunar Express', departure: '01:30 AM', arrival: '02:45 AM', status: 'On Time' },
+    { trainNumber: '99042', trainName: 'Astral Express', departure: '02:00 AM', arrival: '03:15 AM', status: 'Delayed' },
+    { trainNumber: '99043', trainName: 'Galactic Express', departure: '02:30 AM', arrival: '03:45 AM', status: 'On Time' },
+    { trainNumber: '99044', trainName: 'Nebula Express', departure: '03:00 AM', arrival: '04:15 AM', status: 'On Time' },
+    { trainNumber: '99045', trainName: 'Cosmic Express', departure: '03:30 AM', arrival: '04:45 AM', status: 'On Time' },
+    { trainNumber: '99046', trainName: 'Supernova Express', departure: '04:00 AM', arrival: '05:15 AM', status: 'Delayed' },
+    { trainNumber: '99047', trainName: 'Meteor Express', departure: '04:30 AM', arrival: '05:45 AM', status: 'On Time' },
+    { trainNumber: '99048', trainName: 'Comet Express', departure: '05:00 AM', arrival: '06:15 AM', status: 'On Time' },
+    { trainNumber: '99049', trainName: 'Asteroid Express', departure: '05:30 AM', arrival: '06:45 AM', status: 'On Time' },
+    { trainNumber: '99050', trainName: 'Galaxy Express', departure: '06:00 AM', arrival: '07:15 AM', status: 'Delayed' },
+                // Add more schedules as needed
+            ];
+
+            const schedulesContainer = document.getElementById('schedule-body');
+
+            // Function to update status
+            window.updateStatus = function(index, newStatus) {
+                trainSchedules[index].status = newStatus;
+                renderSchedules(trainSchedules);
+            }
+
+            // Function to render schedules
+            function renderSchedules(schedules) {
+                schedulesContainer.innerHTML = ''; // Clear existing content
+
+                schedules.forEach((schedule, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${schedule.trainNumber}</td>
+                        <td>${schedule.trainName}</td>
+                        <td>${schedule.departure}</td>
+                        <td>${schedule.arrival}</td>
+                        <td>${schedule.status}</td>
+                        <td><button onclick="updateStatus(${index}, 'Delayed')">Update</button></td>
+                    `;
+                    schedulesContainer.appendChild(row);
+                });
+            }
+
+            // Initial rendering of schedules
+            renderSchedules(trainSchedules);
+
+            // Search functionality
+            const searchInput = document.getElementById('search-train');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredSchedules = trainSchedules.filter(schedule =>
+                    schedule.trainName.toLowerCase().includes(searchTerm)
+                );
+                renderSchedules(filteredSchedules);
+            });
+        });
+    </script>
+</body>
+</html>
